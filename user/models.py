@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from main import Base
+from database import Base
 from datetime import datetime
 
 
@@ -20,5 +20,3 @@ class Code(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     code = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
-
-    user = relationship("User", back_populates="codes")
