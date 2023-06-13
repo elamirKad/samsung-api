@@ -14,7 +14,7 @@ class TokenData(BaseModel):
     user_id: str = None
 
 
-def create_access_token(data: dict):
+async def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(days=30)
     to_encode.update({"exp": expire})
