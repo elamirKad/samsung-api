@@ -5,14 +5,20 @@ import json
 
 app = FastAPI()
 
+pc = RTCPeerConnection()
+player = MediaPlayer("_neurosama - I don't want to be an engineer.mp3")
+track = player.audio
+pc.addTrack(track)
+
+state = {
+    "paused": False,
+    "position": 0
+}
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
+    global state
     await websocket.accept()
-    pc = RTCPeerConnection()
-    player = MediaPlayer("_neurosama - I don't want to be an engineer.mp3")
-    track = player.audio
-    pc.addTrack(track)
 
     @pc.on("track")
     def on_track(track):
@@ -28,4 +34,23 @@ async def websocket_endpoint(websocket: WebSocket):
         msg = json.loads(data)
         if msg['type'] == 'answer':
             await pc.setRemoteDescription(RTCSessionDescription(**msg))
-
+        elif msg['type'] == 'command':
+            if msg['command'] == 'pause':
+                track.stop()
+                state['paused'] = True
+            elif msg['command'] == 'play':
+                if state['paused']:
+                    track.start()
+                    state['paused'] = False
+            elif msg['command'] == 'back':
+                state['position'] -= 10
+                player.seek(state['position'])
+            elif msg['command'] == 'forward':
+                state['position'] += 10
+                player.seek(state['position'])
+            elif msg['command'] == 'time':
+                await websocket.send_text(json.dumps({
+                    'type': 'time',
+                    'position': state['position'],
+                    'duration': player.duration
+                }))

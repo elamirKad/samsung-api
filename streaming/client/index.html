@@ -1,12 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Real Time Audio Streaming</title>
-    </head>
-    <body>
-        <h1>Real Time Audio Streaming</h1>
-        <button id="startButton">Start Audio Stream</button>
-        <audio id="audio" autoplay></audio>
-        <script src="client.js"></script>
-    </body>
+<head>
+    <title>Real-time audio stream</title>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+</head>
+<body>
+    <audio id="audio" controls></audio>
+
+    <button id="startButton">Start</button>
+    <button id="pauseButton">Pause</button>
+    <button id="playButton">Play</button>
+
+    <script>
+    document.getElementById("startButton").addEventListener("click", function() {
+        startStreaming();
+    });
+    document.getElementById("pauseButton").addEventListener("click", function() {
+        document.getElementById('audio').pause();
+    });
+    document.getElementById("playButton").addEventListener("click", function() {
+        document.getElementById('audio').play();
+    });
+
+    let ws;
+    let pc = new RTCPeerConnection();
+
+    async function startStreaming() {
+        ws = new WebSocket('ws://localhost:8000/ws');
+
+        ws.onmessage = async (event) => {
+            const msg = JSON.parse(event.data);
+            if (msg.type === 'offer') {
+                await pc.setRemoteDescription(new RTCSessionDescription(msg));
+                const answer = await pc.createAnswer();
+                await pc.setLocalDescription(answer);
+                ws.send(JSON.stringify({"sdp": pc.localDescription.sdp, "type": pc.localDescription.type}));
+            }
+        };
+
+        pc.ontrack = (event) => {
+            document.getElementById('audio').srcObject = event.streams[0];
+        };
+    }
+    </script>
+</body>
 </html>
