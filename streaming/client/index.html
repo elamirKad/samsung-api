@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <audio id="audio" controls></audio>
+    <button id="startButton">Start</button>
+    <button id="pauseButton">Pause</button>
+    <button id="playButton">Play</button>
+    <script>
+    document.getElementById("startButton").addEventListener("click", function() {
+        startStreaming();
+    });
+    document.getElementById("pauseButton").addEventListener("click", function() {
+        document.getElementById('audio').pause();
+    });
+    document.getElementById("playButton").addEventListener("click", function() {
+        document.getElementById('audio').play();
+    });
+
+    let mediaSource = new MediaSource();
+    document.getElementById('audio').src = URL.createObjectURL(mediaSource);
+    mediaSource.addEventListener('sourceopen', startStreaming);
+
+    async function startStreaming() {
+        let sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+        let response = await fetch('http://localhost:8000/audio');
+        let reader = response.body.getReader();
+
+        function processChunk({done, value}) {
+            if (done) {
+                mediaSource.endOfStream();
+                return;
+            }
+
+            sourceBuffer.appendBuffer(value);
+            sourceBuffer.onupdateend = () => reader.read().then(processChunk);
+        }
+
+        reader.read().then(processChunk);
+    }
+    </script>
+</body>
+</html>
