@@ -1,56 +1,26 @@
-from aiortc import RTCPeerConnection, RTCSessionDescription
-from aiortc.contrib.media import MediaPlayer
-from fastapi import FastAPI, WebSocket
-import json
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 
-pc = RTCPeerConnection()
-player = MediaPlayer("_neurosama - I don't want to be an engineer.mp3")
-track = player.audio
-pc.addTrack(track)
+origins = [
+    "*"
+]
 
-state = {
-    "paused": False,
-    "position": 0
-}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    global state
-    await websocket.accept()
+def stream_audio():
+    with open("_neurosama - I don't want to be an engineer.mp3", "rb") as f:
+        while chunk := f.read(8192):
+            yield chunk
 
-    @pc.on("track")
-    def on_track(track):
-        print("Track %s received" % track.kind)
-
-    # Server creates offer
-    offer = await pc.createOffer()
-    await pc.setLocalDescription(offer)
-    await websocket.send_text(json.dumps({"sdp": pc.localDescription.sdp, "type": pc.localDescription.type}))
-
-    while True:
-        data = await websocket.receive_text()
-        msg = json.loads(data)
-        if msg['type'] == 'answer':
-            await pc.setRemoteDescription(RTCSessionDescription(**msg))
-        elif msg['type'] == 'command':
-            if msg['command'] == 'pause':
-                track.stop()
-                state['paused'] = True
-            elif msg['command'] == 'play':
-                if state['paused']:
-                    track.start()
-                    state['paused'] = False
-            elif msg['command'] == 'back':
-                state['position'] -= 10
-                player.seek(state['position'])
-            elif msg['command'] == 'forward':
-                state['position'] += 10
-                player.seek(state['position'])
-            elif msg['command'] == 'time':
-                await websocket.send_text(json.dumps({
-                    'type': 'time',
-                    'position': state['position'],
-                    'duration': player.duration
-                }))
+@app.get("/audio")
+def audio_endpoint():
+    return StreamingResponse(stream_audio(), media_type="audio/mpeg")
