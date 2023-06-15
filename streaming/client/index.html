@@ -25,15 +25,17 @@
         let response = await fetch('http://localhost:8000/audio');
         let reader = response.body.getReader();
 
-        reader.read().then(function processChunk({done, value}) {
+        function processChunk({done, value}) {
             if (done) {
                 mediaSource.endOfStream();
                 return;
             }
 
             sourceBuffer.appendBuffer(value);
-            return reader.read().then(processChunk);
-        });
+            sourceBuffer.onupdateend = () => reader.read().then(processChunk);
+        }
+
+        reader.read().then(processChunk);
     }
     </script>
 </body>
