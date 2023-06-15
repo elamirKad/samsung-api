@@ -1,3 +1,6 @@
+import os
+import time
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -16,10 +19,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 def stream_audio():
-    with open("_neurosama - I don't want to be an engineer.mp3", "rb") as f:
-        while chunk := f.read(8192):
-            yield chunk
+    filenames = ["part1.mp3", "part2.mp3", "part3.mp3"]
+    for filename in filenames:
+        while not os.path.exists(filename):
+            time.sleep(1)
+        with open(filename, "rb") as f:
+            while chunk := f.read(8192):
+                yield chunk
+
 
 @app.get("/audio")
 def audio_endpoint():
