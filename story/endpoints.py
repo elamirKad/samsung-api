@@ -29,13 +29,10 @@ def read_topic(topic_id: int, db: Session = Depends(get_db)):
     return topic
 
 
-@router.get("/all", response_model=List[schemas.Story])
-def read_stories(genre_id: Optional[int] = None, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    if genre_id is None:
-        stories = db.query(models.Story).offset(skip).limit(limit).all()
-    else:
-        stories = db.query(models.Story).filter(models.Story.genre_id == genre_id).offset(skip).limit(limit).all()
-    return stories
+@router.get("/all", response_model=List[schemas.Topic])
+def read_topics(genre_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    topics = db.query(models.Topic).filter(models.Genre.id == genre_id).offset(skip).limit(limit).all()
+    return topics
 
 
 @router.post("/topic", response_model=schemas.Topic)
