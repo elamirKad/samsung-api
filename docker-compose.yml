@@ -26,8 +26,34 @@ services:
     networks:
       - default
 
+  story:
+    build: ./story
+    command: uvicorn main:app --host 0.0.0.0 --port 8100
+    volumes:
+      - ./story:/story
+    ports:
+      - 8100:8100
+    depends_on:
+      - story-db
+    networks:
+      - default
+
+  story-db:
+    image: postgres:14-alpine
+    ports:
+      - 5433:5433
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - story_postgres_data:/var/lib/postgresql/data/
+    networks:
+      - default
+
 volumes:
   postgres_data:
+  story_postgres_data:
 
 networks:
     default:
