@@ -16,7 +16,7 @@ class Genre(Base):
 class Topic(Base):
     __tablename__ = "topic"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     genre_id = Column(Integer, ForeignKey("genre.id"))
     description = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

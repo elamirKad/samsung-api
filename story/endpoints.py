@@ -36,3 +36,16 @@ def read_stories(genre_id: Optional[int] = None, skip: int = 0, limit: int = 100
     else:
         stories = db.query(models.Story).filter(models.Story.genre_id == genre_id).offset(skip).limit(limit).all()
     return stories
+
+
+@router.post("/topic", response_model=schemas.Topic)
+def create_topic(topic: schemas.TopicBase, db: Session = Depends(get_db)):
+    try:
+        db_topic = models.Topic(**topic.dict())
+        db.add(db_topic)
+        db.commit()
+        db.refresh(db_topic)
+        return db_topic
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=400, detail=str(e))
