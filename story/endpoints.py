@@ -21,12 +21,12 @@ def read_genres(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return genres
 
 
-@router.get("/story/{story_id}", response_model=schemas.Story)
-def read_story(story_id: str, db: Session = Depends(get_db)):
-    story = db.query(models.Story).filter(models.Story.id == story_id).first()
-    if story is None:
-        raise HTTPException(status_code=404, detail="Story not found")
-    return story
+@router.get("/topic/{topic_id}", response_model=schemas.Topic)
+def read_topic(topic_id: int, db: Session = Depends(get_db)):
+    topic = db.query(models.Topic).filter(models.Topic.id == topic_id).first()
+    if topic is None:
+        raise HTTPException(status_code=404, detail="Topic not found")
+    return topic
 
 
 @router.get("/all", response_model=List[schemas.Story])
