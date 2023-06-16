@@ -1,8 +1,7 @@
 from fastapi import FastAPI
+import endpoints
+
 
 app = FastAPI()
 
-
-@app.get("/")
-def read_root():
-    return {"Story": "Microservice"}
+app.include_router(endpoints.router)
