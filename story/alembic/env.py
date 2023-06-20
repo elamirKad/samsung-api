@@ -5,8 +5,8 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from database import Base
-from models import Genre, Topic, Story, StoryChoice, ChoiceResult, Image, Audio, ResultSentence
+from story.database import Base
+from story.models import Genre, Image, Page, Audio, Topic, Story, Choice
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
