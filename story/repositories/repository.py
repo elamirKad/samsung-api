@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
-from sqlalchemy.orm import Session
+from typing import Optional
 
 
 class Repository(ABC):

@@ -33,3 +33,35 @@ class Topic(TopicBase):
 
     class Config:
         orm_mode = True
+
+
+class AudioBase(BaseModel):
+    path: str
+    created_at: Optional[datetime]
+
+
+class AudioCreate(AudioBase):
+    pass
+
+
+class Audio(AudioBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class ImageBase(BaseModel):
+    path: str
+    created_at: Optional[datetime]
+
+
+class ImageCreate(ImageBase):
+    pass
+
+
+class Image(ImageBase):
+    id: int
+
+    class Config:
+        orm_mode = True
