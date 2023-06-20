@@ -65,3 +65,21 @@ class Image(ImageBase):
 
     class Config:
         orm_mode = True
+
+
+class PageBase(BaseModel):
+    image_id: int
+    audio_id: int
+    content: str
+    created_at: Optional[datetime]
+
+
+class PageCreate(PageBase):
+    pass
+
+
+class Page(PageBase):
+    id: int
+
+    class Config:
+        orm_mode = True

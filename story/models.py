@@ -55,6 +55,7 @@ class Choice(Base):
     story_id = Column(Integer, ForeignKey("stories.id"))
     page_id = Column(Integer, ForeignKey("pages.id"), nullable=True)
     image_id = Column(Integer, ForeignKey("images.id"), nullable=True)
+    prompt = Column(Text)
     page_order = Column(Integer)
     created_at = Column(DateTime)
 
