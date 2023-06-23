@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 
-def stream_audio():
+async def stream_audio():
     filenames = ["part1.mp3", "part2.mp3", "part3.mp3"]
     for filename in filenames:
         while not os.path.exists(filename):
@@ -31,5 +31,5 @@ def stream_audio():
 
 
 @app.get("/audio")
-def audio_endpoint():
+async def audio_endpoint():
     return StreamingResponse(stream_audio(), media_type="audio/mpeg")
