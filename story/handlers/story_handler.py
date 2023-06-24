@@ -3,7 +3,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from domain.repositories.story_repository import StoryRepository
 from domain.services.story_service import StoryService
-from interfaces.schemas.story_schema import StoryCreate, Story
+from interfaces.schemas.story_schema import StoryCreate, Story, StoryResponse
 from infrastructure.database import get_db
 from infrastructure.jwt_token import decode_access_token
 
@@ -15,7 +15,7 @@ def get_story_service(db: Session = Depends(get_db)) -> StoryService:
     return StoryService(story_repo=story_repo)
 
 
-@router.get("", response_model=List[Story])
+@router.get("", response_model=List[StoryResponse])
 def get_stories_by_user(
     user_id: int = Depends(decode_access_token),
     story_service: StoryService = Depends(get_story_service),
@@ -24,7 +24,7 @@ def get_stories_by_user(
     return stories
 
 
-@router.post("", response_model=Story)
+@router.post("", response_model=StoryResponse)
 def create_story(
     story: StoryCreate,
     user_id: int = Depends(decode_access_token),

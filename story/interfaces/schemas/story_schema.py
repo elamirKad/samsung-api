@@ -12,9 +12,12 @@ class StoryCreate(StoryBase):
 
 
 class Story(StoryBase):
-    id: int
     user_id: int
     created_at: Optional[datetime] = datetime.now()
+
+
+class StoryResponse(Story):
+    id: int
 
     class Config:
         orm_mode = True
