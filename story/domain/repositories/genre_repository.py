@@ -13,6 +13,9 @@ class GenreRepository(Repository):
     def get(self, id: int) -> Optional[Genre]:
         return self.db.query(Genre).filter(Genre.id == id).first()
 
+    def get_all(self) -> Optional[Genre]:
+        return self.db.query(Genre).all()
+
     def create(self, genre: GenreCreate) -> Genre:
         db_genre = Genre(**genre.dict())
         self.db.add(db_genre)

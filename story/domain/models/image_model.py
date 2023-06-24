@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime
-from database import Base
+from infrastructure.database import Base
 
 
 class Image(Base):

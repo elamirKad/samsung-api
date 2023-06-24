@@ -28,7 +28,7 @@ services:
 
   story:
     build: ./story
-    command: uvicorn main:app --host 0.0.0.0 --port 8100
+    command: uvicorn application.main:app --host 0.0.0.0 --port 8100
     volumes:
       - ./story:/story
     ports:

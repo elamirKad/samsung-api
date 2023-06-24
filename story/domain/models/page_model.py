@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, Text, DateTime
 from sqlalchemy.orm import relationship
-from database import Base
+from infrastructure.database import Base
 
 
 class Page(Base):
