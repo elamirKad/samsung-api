@@ -10,4 +10,3 @@ class Story(Base):
     user_id = Column(Integer)
     topic_id = Column(Integer, ForeignKey("topics.id"))
     created_at = Column(DateTime)
-    choices = relationship("Choice", back_populates="story")
