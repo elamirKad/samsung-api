@@ -1,13 +1,11 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
+from interfaces.schemas.choice_schema import Choice
 
 
 class PageBase(BaseModel):
-    image_id: int
-    audio_id: int
     content: str
-    created_at: Optional[datetime]
 
 
 class PageCreate(PageBase):
@@ -16,6 +14,10 @@ class PageCreate(PageBase):
 
 class Page(PageBase):
     id: int
+    image_id: Optional[int]
+    audio_id: Optional[int]
+    created_at: Optional[datetime]
+    choices: List[Choice] = []
 
     class Config:
         orm_mode = True

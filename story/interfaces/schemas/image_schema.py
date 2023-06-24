@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 class ImageBase(BaseModel):
     path: str
-    created_at: Optional[datetime]
 
 
 class ImageCreate(ImageBase):
@@ -14,6 +13,7 @@ class ImageCreate(ImageBase):
 
 class Image(ImageBase):
     id: int
+    created_at: Optional[datetime]
 
     class Config:
         orm_mode = True

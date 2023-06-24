@@ -1,25 +1,31 @@
-from sqlalchemy.orm import Session
-from interfaces.schemas.page_schema import PageCreate, Page
-from protocols.service import Service
+from domain.models.page_model import Page
+from interfaces.schemas.page_schema import PageCreate
 from domain.repositories.page_repository import PageRepository
-from audio_service import AudioService
-from image_service import ImageService
-from faker import Faker
-
-fake = Faker()
+from domain.services.image_service import ImageService
+from domain.services.audio_service import AudioService
+from domain.services.choice_service import ChoiceService
+from protocols.service import Service
+from typing import List
 
 
 class PageService(Service):
+    def __init__(self, page_repo: PageRepository, image_service: ImageService, audio_service: AudioService, choice_service: ChoiceService):
+        self.page_repo = page_repo
+        self.image_service = image_service
+        self.audio_service = audio_service
+        self.choice_service = choice_service
 
-    def __init__(self, db: Session):
-        self.repository = PageRepository(db)
-        self.audio_service = AudioService(db)
-        self.image_service = ImageService(db)
+    def create_page(self, page: PageCreate) -> Page:
+        # TODO: implement apis
+        image_path = 'default.png'
+        audio_path = 'default.mp3'
+        image = self.image_service.create(image_path)
+        audio = self.audio_service.create(audio_path)
 
-    def create(self) -> Page:
-        audio = self.audio_service.create()
-        image = self.image_service.create()
-        content = fake.text()
-        page = PageCreate(image_id=image.id, audio_id=audio.id, content=content)
-        db_page = Page(**page.dict())
-        return self.repository.create(db_page)
+        page = self.page_repo.create(page, image_id=image.id, audio_id=audio.id)
+
+        for _ in range(3):
+            prompt = 'default'
+            self.choice_service.create_choice(page_id=page.id, prompt=prompt)
+
+        return page

@@ -1,12 +1,11 @@
+from sqlalchemy.orm import Session
 from domain.models.audio_model import Audio
 from interfaces.schemas.audio_schema import AudioCreate
 from protocols.repository import Repository
-from sqlalchemy.orm import Session
 from typing import Optional
 
 
 class AudioRepository(Repository):
-
     def __init__(self, db: Session):
         self.db = db
 

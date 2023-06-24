@@ -1,11 +1,10 @@
 from datetime import datetime
-from typing import Optional
 from pydantic import BaseModel
+from typing import Optional
 
 
 class AudioBase(BaseModel):
     path: str
-    created_at: Optional[datetime]
 
 
 class AudioCreate(AudioBase):
@@ -14,6 +13,7 @@ class AudioCreate(AudioBase):
 
 class Audio(AudioBase):
     id: int
+    created_at: Optional[datetime]
 
     class Config:
         orm_mode = True

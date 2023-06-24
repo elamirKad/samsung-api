@@ -1,18 +1,15 @@
-from sqlalchemy.orm import Session
+from domain.models.audio_model import Audio
+from interfaces.schemas.audio_schema import AudioCreate
 from domain.repositories.audio_repository import AudioRepository
-from interfaces.schemas.audio_schema import AudioCreate, Audio
 from protocols.service import Service
-from faker import Faker
-
-fake = Faker()
 
 
 class AudioService(Service):
+    def __init__(self, audio_repo: AudioRepository):
+        self.audio_repo = audio_repo
 
-    def __init__(self, db: Session):
-        self.repository = AudioRepository(db)
+    def get(self, id: int) -> Audio:
+        return self.audio_repo.get(id)
 
-    def create(self) -> Audio:
-        audio = AudioCreate(path=fake.file_path())
-        db_audio = Audio(**audio.dict())
-        return self.repository.create(db_audio)
+    def create(self, audio: AudioCreate) -> Audio:
+        return self.audio_repo.create(audio)
