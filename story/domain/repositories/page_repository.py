@@ -1,6 +1,6 @@
-from story.models import Page
-from story.schemas import PageCreate
-from repository import Repository
+from domain.models.page_model import Page
+from interfaces.schemas.page_schema import PageCreate
+from protocols.repository import Repository
 from sqlalchemy.orm import Session
 from typing import Optional
 

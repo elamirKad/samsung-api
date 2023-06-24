@@ -1,7 +1,7 @@
-from story.models import Topic
-from story.schemas import TopicCreate
+from domain.models.topic_model import Topic
+from interfaces.schemas.topic_schema import TopicCreate
 from sqlalchemy import desc
-from repository import Repository
+from protocols.repository import Repository
 from typing import Optional, List
 from sqlalchemy.orm import Session
 

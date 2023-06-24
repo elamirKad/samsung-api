@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from story.schemas import PageCreate, Page
-from service import Service
-from story.repositories.page_repository import PageRepository
+from interfaces.schemas.page_schema import PageCreate, Page
+from protocols.service import Service
+from domain.repositories.page_repository import PageRepository
 from audio_service import AudioService
 from image_service import ImageService
 from faker import Faker

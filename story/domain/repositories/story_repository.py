@@ -1,5 +1,5 @@
-from story.models import Story
-from repository import Repository
+from domain.models.story_model import Story
+from protocols.repository import Repository
 from sqlalchemy.orm import Session
 from typing import List, Optional
 

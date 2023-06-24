@@ -1,6 +1,6 @@
-from story.models import Genre
-from story.schemas import GenreCreate
-from repository import Repository
+from domain.models.genre_model import Genre
+from interfaces.schemas.genre_schema import GenreCreate
+from protocols.repository import Repository
 from typing import Optional
 from sqlalchemy.orm import Session
 

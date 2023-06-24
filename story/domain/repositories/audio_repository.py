@@ -1,6 +1,6 @@
-from story.models import Audio
-from story.schemas import AudioCreate
-from repository import Repository
+from domain.models.audio_model import Audio
+from interfaces.schemas.audio_schema import AudioCreate
+from protocols.repository import Repository
 from sqlalchemy.orm import Session
 from typing import Optional
 

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from repositories.audio_repository import AudioRepository
-from story.schemas import AudioCreate, Audio
-from service import Service
+from domain.repositories.audio_repository import AudioRepository
+from interfaces.schemas.audio_schema import AudioCreate, Audio
+from protocols.service import Service
 from faker import Faker
 
 fake = Faker()

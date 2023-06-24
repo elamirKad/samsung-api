@@ -1,6 +1,6 @@
-from story.models import Image
-from story.schemas import ImageCreate
-from repository import Repository
+from domain.models.image_model import Image
+from interfaces.schemas.image_schema import ImageCreate
+from protocols.repository import Repository
 from sqlalchemy.orm import Session
 from typing import Optional
 

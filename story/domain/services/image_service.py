@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from story.schemas import ImageCreate, Image
-from story.repositories.image_repository import ImageRepository
-from service import Service
+from interfaces.schemas.image_schema import ImageCreate, Image
+from domain.repositories.image_repository import ImageRepository
+from protocols.service import Service
 from faker import Faker
 
 fake = Faker()
