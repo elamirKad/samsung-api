@@ -9,6 +9,9 @@ class ChoiceRepository(Repository):
     def __init__(self, db: Session):
         self.db = db
 
+    def get(self, id: int) -> Optional[Choice]:
+        return self.db.query(Choice).filter(Choice.id == id).first()
+
     def create(self, choice: ChoiceCreate) -> Choice:
         db_choice = Choice(**choice.dict())
         self.db.add(db_choice)

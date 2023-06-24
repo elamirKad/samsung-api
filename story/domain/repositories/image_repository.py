@@ -9,6 +9,9 @@ class ImageRepository(Repository):
     def __init__(self, db: Session):
         self.db = db
 
+    def get(self, id: int) -> Optional[Image]:
+        return self.db.query(Image).filter(Image.id == id).first()
+
     def create(self, image: ImageCreate) -> Image:
         db_image = Image(**image.dict())
         self.db.add(db_image)

@@ -1,4 +1,6 @@
 from domain.models.page_model import Page
+from interfaces.schemas.audio_schema import AudioCreate
+from interfaces.schemas.image_schema import ImageCreate
 from interfaces.schemas.page_schema import PageCreate
 from domain.repositories.page_repository import PageRepository
 from domain.services.image_service import ImageService
@@ -19,8 +21,10 @@ class PageService(Service):
         # TODO: implement apis
         image_path = 'default.png'
         audio_path = 'default.mp3'
-        image = self.image_service.create(image_path)
-        audio = self.audio_service.create(audio_path)
+        image_obj = ImageCreate(path=image_path)
+        audio_obj = AudioCreate(path=audio_path)
+        image = self.image_service.create(image_obj)
+        audio = self.audio_service.create(audio_obj)
 
         page = self.page_repo.create(page, image_id=image.id, audio_id=audio.id)
 

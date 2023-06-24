@@ -8,11 +8,8 @@ class Choice(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     story_id = Column(Integer, ForeignKey("stories.id"))
-    page_id = Column(Integer, ForeignKey("pages.id"), nullable=True)
+    page_id = Column(Integer, nullable=True)
     image_id = Column(Integer, ForeignKey("images.id"), nullable=True)
     prompt = Column(Text)
     page_order = Column(Integer)
     created_at = Column(DateTime)
-
-    story = relationship("Story", back_populates="choices")
-    page = relationship("Page", back_populates="choices")
