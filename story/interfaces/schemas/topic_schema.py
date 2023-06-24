@@ -6,7 +6,6 @@ from pydantic import BaseModel
 class TopicBase(BaseModel):
     genre_id: int
     description: str
-    created_at: Optional[datetime]
 
 
 class TopicCreate(TopicBase):
@@ -15,6 +14,7 @@ class TopicCreate(TopicBase):
 
 class Topic(TopicBase):
     id: int
+    created_at: Optional[datetime] = datetime.now()
 
     class Config:
         orm_mode = True

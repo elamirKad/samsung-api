@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 def get_topic_service(db: Session = Depends(get_db)):
-    return TopicService(genre_repo=TopicRepository(db))
+    return TopicService(topic_repo=TopicRepository(db))
 
 
 @router.get("", response_model=List[Topic])

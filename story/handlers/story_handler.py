@@ -19,7 +19,6 @@ def get_story_service(db: Session = Depends(get_db)) -> StoryService:
 def get_stories_by_user(
     user_id: int = Depends(decode_access_token),
     story_service: StoryService = Depends(get_story_service),
-    token: Optional[str] = Header(None)
 ):
     stories = story_service.get_stories_by_user(user_id=user_id)
     return stories
@@ -29,8 +28,7 @@ def get_stories_by_user(
 def create_story(
     story: StoryCreate,
     user_id: int = Depends(decode_access_token),
-    story_service: StoryService = Depends(get_story_service),
-    token: Optional[str] = Header(None)
+    story_service: StoryService = Depends(get_story_service)
 ):
     created_story = story_service.create_story(user_id=user_id, topic_id=story.topic_id)
     return created_story

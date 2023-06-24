@@ -9,7 +9,7 @@ class TopicService:
         self.topic_repo = topic_repo
 
     def get_all(self) -> List[topic_model.Topic]:
-        return self.topic_repo.get()
+        return self.topic_repo.get_all()
 
     def get_by_genre(self, genre_id: int) -> List[topic_model.Topic]:
         return self.topic_repo.get_all_by_genre(genre_id=genre_id)
