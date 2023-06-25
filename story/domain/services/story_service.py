@@ -5,7 +5,7 @@ from random import choice
 from domain.models import story_model
 from domain.services.choice_service import ChoiceService
 from interfaces.schemas.choice_schema import ChoiceCreate
-from interfaces.schemas.story_schema import Story, StoryResponse, StoryCreate
+from interfaces.schemas.story_schema import Story, StoryResponse, StoryCreate, StoryWithChoices
 from domain.repositories.story_repository import StoryRepository
 from typing import List, Optional
 
@@ -34,5 +34,5 @@ class StoryService:
         letters = string.ascii_lowercase
         return ''.join(choice(letters) for i in range(10))
 
-    def get_story(self, story_id: int) -> Optional[Story]:
+    def get_story(self, story_id: int) -> Optional[StoryWithChoices]:
         return self.story_repo.get_story_with_related_choices(story_id=story_id)

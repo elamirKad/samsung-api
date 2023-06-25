@@ -7,7 +7,7 @@ from domain.repositories.image_repository import ImageRepository
 from domain.repositories.story_repository import StoryRepository
 from domain.services.choice_service import ChoiceService
 from domain.services.story_service import StoryService
-from interfaces.schemas.story_schema import StoryCreate, Story, StoryResponse
+from interfaces.schemas.story_schema import StoryCreate, Story, StoryResponse, StoryWithChoices
 from infrastructure.database import get_db
 from infrastructure.jwt_token import decode_access_token
 
@@ -41,7 +41,7 @@ def create_story(
     return created_story
 
 
-@router.get("/{story_id}", response_model=StoryResponse)
+@router.get("/{story_id}", response_model=StoryWithChoices)
 def get_story(
     story_id: int,
     story_service: StoryService = Depends(get_story_service),
