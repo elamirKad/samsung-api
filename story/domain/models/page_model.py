@@ -11,5 +11,3 @@ class Page(Base):
     audio_id = Column(Integer, ForeignKey("audios.id"), nullable=True)
     content = Column(Text)
     created_at = Column(DateTime)
-
-    choices = relationship("Choice", back_populates="page")

@@ -12,3 +12,4 @@ from domain.models.image_model import Image
 Genre.topics = relationship("Topic", order_by=Topic.id, back_populates="genre")
 Topic.stories = relationship("Story", order_by=Story.id, back_populates="topic")
 Story.choices = relationship("Choice", order_by=Choice.id, back_populates="story")
+Page.choices = relationship("Choice", order_by=Choice.id, back_populates="page")

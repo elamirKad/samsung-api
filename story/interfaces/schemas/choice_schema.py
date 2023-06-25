@@ -21,3 +21,11 @@ class Choice(ChoiceBase):
 
     class Config:
         orm_mode = True
+
+
+class ChoiceWithPage(Choice):
+    page: Optional[int]
+
+    class Config:
+        orm_mode = True
+        arbitrary_types_allowed = True

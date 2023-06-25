@@ -1,5 +1,6 @@
 from domain.models.page_model import Page
 from interfaces.schemas.audio_schema import AudioCreate
+from interfaces.schemas.choice_schema import ChoiceCreate, Choice
 from interfaces.schemas.image_schema import ImageCreate
 from interfaces.schemas.page_schema import PageCreate
 from domain.repositories.page_repository import PageRepository
@@ -17,7 +18,13 @@ class PageService(Service):
         self.audio_service = audio_service
         self.choice_service = choice_service
 
-    def create_page(self, page: PageCreate) -> Page:
+    def get_page(self, page_id: int) -> Page:
+        return self.page_repo.get(id=page_id)
+
+    def create(self):
+        pass
+
+    def create_page(self, page: PageCreate, choice_init: Choice) -> Page:
         # TODO: implement apis
         image_path = 'default.png'
         audio_path = 'default.mp3'
@@ -30,6 +37,12 @@ class PageService(Service):
 
         for _ in range(3):
             prompt = 'default'
-            self.choice_service.create_choice(page_id=page.id, prompt=prompt)
+            choice = ChoiceCreate(
+                page_id=page.id,
+                prompt=prompt,
+                page_order=choice_init.page_order + 1,
+                story_id=choice_init.story_id
+            )
+            self.choice_service.create_choice(page_id=page.id, choice=choice)
 
         return page
