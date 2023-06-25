@@ -15,6 +15,9 @@ class ChoiceService(Service):
     def get_choice(self, choice_id: int) -> Choice:
         return self.choice_repo.get(id=choice_id)
 
+    def get_choices_by_page_id(self, page_id: int) -> list[Choice]:
+        return self.choice_repo.get_choices_by_page_id(page_id=page_id)
+
     def create(self, choice: ChoiceCreate) -> Choice:
         # TODO: implement image generation
         image = ImageCreate(path='default.png')

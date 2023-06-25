@@ -8,7 +8,7 @@ from domain.services.image_service import ImageService
 from domain.services.audio_service import AudioService
 from domain.services.choice_service import ChoiceService
 from protocols.service import Service
-from typing import List
+from typing import List, Optional
 
 
 class PageService(Service):
@@ -45,4 +45,10 @@ class PageService(Service):
             )
             self.choice_service.create_choice(page_id=page.id, choice=choice)
 
+        return page
+
+    def get_page_with_choices(self, page_id: int) -> Optional[Page]:
+        page = self.page_repo.get(page_id=page_id)
+        if page:
+            page.choices = self.choice_service.get_choices_by_page_id(page_id=page_id)
         return page

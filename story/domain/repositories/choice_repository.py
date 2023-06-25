@@ -12,6 +12,9 @@ class ChoiceRepository(Repository):
     def get(self, id: int) -> Optional[Choice]:
         return self.db.query(Choice).filter(Choice.id == id).first()
 
+    def get_choices_by_page_id(self, page_id: int) -> list[Choice]:
+        return self.db.query(Choice).filter(Choice.page_id == page_id).all()
+
     def create(self, choice: ChoiceCreate) -> Choice:
         db_choice = Choice(**choice.dict())
         self.db.add(db_choice)

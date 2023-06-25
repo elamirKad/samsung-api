@@ -10,7 +10,8 @@ from domain.services.audio_service import AudioService
 from domain.services.choice_service import ChoiceService
 from domain.services.image_service import ImageService
 from domain.services.page_service import PageService
-from interfaces.schemas.choice_schema import ChoiceCreate, Choice, ChoiceWithPage
+from interfaces.schemas.choice_schema import ChoiceCreate, Choice
+from interfaces.schemas.choice_page_schema import ChoiceWithPage
 from interfaces.schemas.page_schema import PageCreate
 from infrastructure.database import get_db
 from infrastructure.jwt_token import decode_access_token
@@ -68,7 +69,7 @@ def get_choice(
     if not choice:
         raise HTTPException(status_code=404, detail="Choice not found")
     if choice.page_id:
-        page = page_service.get_page(page_id=choice.page_id).id
+        page = page_service.get_page(page_id=choice.page_id)
     else:
         page = None
     result = ChoiceWithPage.from_orm(choice)
