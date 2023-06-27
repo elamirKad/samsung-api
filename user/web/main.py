@@ -6,9 +6,20 @@ from auth_service import create_random_code, authenticate_user
 from auth_token import get_current_user
 from models import User
 from database import get_db
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+origins = [
+    "*"
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/check")
 
 
