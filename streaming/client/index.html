@@ -22,7 +22,7 @@
 
     async function startStreaming() {
         let sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
-        let response = await fetch('http://localhost:8000/audio');
+        let response = await fetch('http://162.19.255.208/audio/1');
         let reader = response.body.getReader();
 
         function processChunk({done, value}) {

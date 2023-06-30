@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "streaming"
+version = "0.1.0"
+description = ""
+authors = ["elamirkad <elamirkad@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.98.0"
+sqlalchemy = "^2.0.17"
+uvicorn = "^0.22.0"
+asyncpg = "^0.27.0"
+alembic = "^1.11.1"
+psycopg2-binary = "^2.9.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
