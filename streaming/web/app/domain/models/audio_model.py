@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime
-from infrastructure.database import Base
+from app.infrastructure.database import Base
 
 
 class Audio(Base):
@@ -7,4 +7,5 @@ class Audio(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     path = Column(String)
+    sentences = Column(Integer)
     created_at = Column(DateTime)

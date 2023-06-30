@@ -5,6 +5,7 @@ from typing import Optional
 
 class AudioBase(BaseModel):
     path: str
+    sentences: int
 
 
 class AudioCreate(AudioBase):
