@@ -3,6 +3,7 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 from interfaces.schemas.choice_schema import Choice
+from interfaces.schemas.page_schema import Page
 
 
 class StoryBase(BaseModel):
@@ -27,6 +28,13 @@ class StoryResponse(Story):
 
 class StoryWithChoices(StoryResponse):
     related_choices: Optional[List[Choice]] = []
+
+    class Config:
+        orm_mode = True
+
+
+class StoryWithChoicesAndPages(StoryWithChoices):
+    related_pages: Optional[List[Page]] = []
 
     class Config:
         orm_mode = True

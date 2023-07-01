@@ -20,7 +20,7 @@ class PageService(Service):
         self.choice_service = choice_service
 
     def get_page(self, page_id: int) -> Page:
-        return self.page_repo.get(id=page_id)
+        return self.page_repo.get(page_id=page_id)
 
     def create(self):
         pass
@@ -35,7 +35,7 @@ class PageService(Service):
         audio = self.audio_service.create(audio_obj)
 
         content, choices = generate_story(prompt, story_id)
-        page = self.page_repo.create(PageCreate(content=content), image_id=image.id, audio_id=audio.id)
+        page = self.page_repo.create(PageCreate(content=content), image_id=image.id, audio_id=audio.id, story_id=story_id)
 
         for choice in choices:
             choice_obj = ChoiceCreate(
@@ -48,7 +48,7 @@ class PageService(Service):
 
         return page
 
-    def create_page(self, page: PageCreate, choice_init: Choice) -> Page:
+    def create_page(self, choice_init: Choice) -> Page:
         # TODO: implement apis
         image_path = 'default.png'
         audio_path = 'default.mp3'
@@ -56,14 +56,13 @@ class PageService(Service):
         audio_obj = AudioCreate(path=audio_path)
         image = self.image_service.create(image_obj)
         audio = self.audio_service.create(audio_obj)
+        content, choices = generate_story(choice_init.prompt, choice_init.story_id)
+        page = self.page_repo.create(PageCreate(content=content), image_id=image.id, audio_id=audio.id, story_id=choice_init.story_id)
 
-        page = self.page_repo.create(page, image_id=image.id, audio_id=audio.id)
-
-        for _ in range(3):
-            prompt = 'default'
+        for choice in choices:
             choice = ChoiceCreate(
                 page_id=page.id,
-                prompt=prompt,
+                prompt=choice,
                 page_order=choice_init.page_order + 1,
                 story_id=choice_init.story_id
             )

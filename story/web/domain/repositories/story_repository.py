@@ -1,5 +1,7 @@
 from domain.models.choice_model import Choice
-from interfaces.schemas.story_schema import Story, StoryCreate, StoryResponse, StoryWithChoices
+from domain.models.page_model import Page
+from interfaces.schemas.story_schema import Story, StoryCreate, StoryResponse, StoryWithChoices, \
+    StoryWithChoicesAndPages
 from domain.models import story_model
 from protocols.repository import Repository
 from sqlalchemy.orm import Session
@@ -29,13 +31,13 @@ class StoryRepository(Repository):
         story_response = StoryResponse(**db_story.__dict__)
         return story_response
 
-    def get_story_with_related_choices(self, story_id: int) -> Optional[StoryWithChoices]:
+    def get_story_with_related_choices_and_pages(self, story_id: int) -> Optional[StoryWithChoicesAndPages]:
         story = self.db.query(story_model.Story).filter(story_model.Story.id == story_id).first()
         if story:
             story.related_choices = self.db.query(Choice).filter(
                 Choice.story_id == story_id).all()
-            return StoryWithChoices.from_orm(story)
+            story.related_pages = self.db.query(Page).filter(
+                Page.story_id == story_id).all()
+            return StoryWithChoicesAndPages.from_orm(story)
         else:
             return None
-
-    

@@ -1,6 +1,6 @@
 from datetime import datetime
 from domain.services.page_service import PageService
-from interfaces.schemas.story_schema import Story, StoryResponse, StoryWithChoices
+from interfaces.schemas.story_schema import Story, StoryResponse, StoryWithChoices, StoryWithChoicesAndPages
 from domain.repositories.story_repository import StoryRepository
 from domain.services.topic_service import TopicService
 from typing import List, Optional
@@ -23,5 +23,5 @@ class StoryService:
 
         return created_story
 
-    def get_story(self, story_id: int) -> Optional[StoryWithChoices]:
-        return self.story_repo.get_story_with_related_choices(story_id=story_id)
+    def get_story(self, story_id: int) -> Optional[StoryWithChoicesAndPages]:
+        return self.story_repo.get_story_with_related_choices_and_pages(story_id=story_id)

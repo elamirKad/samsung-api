@@ -52,8 +52,7 @@ def create_choice(
     except ValueError:
         raise HTTPException(status_code=401, detail="Unauthorized")
     choice = choice_service.get_choice(choice_id=choice_id)
-    page = PageCreate(content="New page")
-    created_page = page_service.create_page(page=page, choice_init=choice)
+    created_page = page_service.create_page(choice_init=choice)
 
     updated_choice = choice_service.update_choice_page_id(choice_id=choice_id, page_id=created_page.id)
     return updated_choice

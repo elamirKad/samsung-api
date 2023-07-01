@@ -14,7 +14,8 @@ from domain.services.topic_service import TopicService
 from domain.services.page_service import PageService
 from domain.services.image_service import ImageService
 from domain.services.audio_service import AudioService
-from interfaces.schemas.story_schema import StoryCreate, Story, StoryResponse, StoryWithChoices
+from interfaces.schemas.story_schema import StoryCreate, Story, StoryResponse, StoryWithChoices, \
+    StoryWithChoicesAndPages
 from infrastructure.database import get_db
 from infrastructure.jwt_token import decode_access_token
 
@@ -55,7 +56,7 @@ def create_story(
     return created_story
 
 
-@router.get("/{story_id}", response_model=StoryWithChoices)
+@router.get("/{story_id}", response_model=StoryWithChoicesAndPages)
 def get_story(
     story_id: int,
     story_service: StoryService = Depends(get_story_service),
