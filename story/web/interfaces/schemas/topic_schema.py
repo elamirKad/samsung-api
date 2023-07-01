@@ -6,6 +6,7 @@ from pydantic import BaseModel
 class TopicBase(BaseModel):
     genre_id: int
     description: str
+    image_url: str
 
 
 class TopicCreate(TopicBase):

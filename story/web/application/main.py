@@ -1,8 +1,19 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from handlers import genre_handler, topic_handler, story_handler, choice_handler, page_handler, image_handler, audio_handler
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 app.include_router(genre_handler.router, prefix="/genre", tags=["genre"])
 app.include_router(topic_handler.router, prefix="/topic", tags=["topic"])

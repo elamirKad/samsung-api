@@ -9,4 +9,5 @@ class Topic(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     genre_id = Column(Integer, ForeignKey("genres.id"))
     description = Column(Text)
+    image_url = Column(Text)
     created_at = Column(DateTime)

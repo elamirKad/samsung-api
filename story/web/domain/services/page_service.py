@@ -1,3 +1,6 @@
+import random
+import string
+
 from domain.models.page_model import Page
 from interfaces.schemas.audio_schema import AudioCreate
 from interfaces.schemas.choice_schema import ChoiceCreate, Choice
@@ -11,6 +14,7 @@ from protocols.service import Service
 from typing import List, Optional
 from core.text_generation_core import generate_story
 from core.image_generation_core import generate_image
+import requests
 
 
 class PageService(Service):
@@ -27,12 +31,18 @@ class PageService(Service):
         pass
 
     def create_initial_page(self, prompt: str, story_id: int) -> Page:
-        # TODO: implement apis
-        audio_path = 'default.mp3'
+        content, choices = generate_story(prompt, story_id)
+
+        random_string = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+
+        url = 'http://162.19.255.208/audio'
+        headers = {'Content-Type': 'application/json'}
+        data = {'path': random_string, 'sentences': content}
+        response = requests.post(url, headers=headers, json=data)
+
+        audio_path = f"http://162.19.255.208/audio/{response.json()['id']}"
         audio_obj = AudioCreate(path=audio_path)
         audio = self.audio_service.create(audio_obj)
-
-        content, choices = generate_story(prompt, story_id)
 
         image_path = generate_image(content)
         image_obj = ImageCreate(path=image_path)
@@ -52,11 +62,18 @@ class PageService(Service):
         return page
 
     def create_page(self, choice_init: Choice) -> Page:
-        # TODO: implement apis
-        audio_path = 'default.mp3'
+        content, choices = generate_story(choice_init.prompt, choice_init.story_id)
+
+        random_string = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+
+        url = 'http://162.19.255.208/audio'
+        headers = {'Content-Type': 'application/json'}
+        data = {'path': random_string, 'sentences': content}
+        response = requests.post(url, headers=headers, json=data)
+
+        audio_path = f"http://162.19.255.208/audio/{response.json()['id']}"
         audio_obj = AudioCreate(path=audio_path)
         audio = self.audio_service.create(audio_obj)
-        content, choices = generate_story(choice_init.prompt, choice_init.story_id)
 
         image_path = generate_image(content)
         image_obj = ImageCreate(path=image_path)

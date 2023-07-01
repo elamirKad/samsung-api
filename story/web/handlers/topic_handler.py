@@ -19,6 +19,12 @@ def read_topics(topic_service: TopicService = Depends(get_topic_service)):
     return topics
 
 
+@router.get("/single/{topic_id}", response_model=Topic)
+def read_topic(topic_id: int, topic_service: TopicService = Depends(get_topic_service)):
+    topic = topic_service.get(topic_id=topic_id)
+    return topic
+
+
 @router.get("/{genre_id}", response_model=List[Topic])
 def read_topics_by_genre(genre_id: int, topic_service: TopicService = Depends(get_topic_service)):
     topics = topic_service.get_by_genre(genre_id=genre_id)

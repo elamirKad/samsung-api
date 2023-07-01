@@ -28,25 +28,32 @@ def write_prompt(prompt):
 def generate_image(
     prompt,
     url=SD_API_URL,
-    guidance_scale=7.5,
 ):
     prompt = write_prompt(prompt)
+    prompt += ", masterpiece, 4k, trending on artstation, best quality, drawn"
+    prompt = "anime, anime picture, anime style " + prompt
     print(prompt)
     payload = json.dumps({
-        "key": "H7ycSgt7QhMcB7KVmgVgMJkrl4I6qIUejt6RKBLAYqgoomMlSQZpTpp73WNE",
+        "key": "j1jGQM7CWIIyE7BWNqXt2qi2Jv6TgHI39eufmUShezw62G9fbhdjyqk43lKb",
         "prompt": prompt,
-        "negative_prompt": None,
+        "negative_prompt": "((((ugly)))), (((duplicate))), ((morbid)), ((mutilated)), [out of frame], extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), (fused fingers), (too many fingers), (((long neck)))",
+        "model_id": "anything-v5",
         "width": "512",
-        "height": "448",
+        "height": "512",
         "samples": "1",
         "num_inference_steps": "20",
-        "seed": None,
-        "guidance_scale": guidance_scale,
         "safety_checker": "no",
+        "seed": None,
+        "guidance_scale": 7.5,
         "multi_lingual": "no",
         "panorama": "no",
         "self_attention": "no",
         "upscale": "no",
+        "tomesd": "yes",
+        "use_karras_sigmas": "yes",
+        "vae": None,
+        "lora_strength": None,
+        "scheduler": "EulerAncestralDiscreteScheduler",
         "webhook": None,
         "track_id": None
     })
@@ -55,5 +62,5 @@ def generate_image(
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     response_dict = json.loads(response.text)
-    print(response_dict["output"][0])
+    print(response_dict)
     return response_dict["output"][0]
