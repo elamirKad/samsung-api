@@ -1,5 +1,6 @@
+from core.image_generation_core import generate_image
 from domain.models.choice_model import Choice
-from interfaces.schemas.choice_schema import ChoiceCreate
+from interfaces.schemas.choice_schema import ChoiceCreate, ChoiceCreateImage
 from domain.repositories.choice_repository import ChoiceRepository
 from domain.repositories.image_repository import ImageRepository
 from domain.services.image_service import ImageService
@@ -20,20 +21,22 @@ class ChoiceService(Service):
 
     def create(self, choice: ChoiceCreate) -> Choice:
         # TODO: implement image generation
-        image = ImageCreate(path='default.png')
-        created_image = self.image_service.create(image)
+        image_path = "default.png"
+        image_obj = ImageCreate(path=image_path)
+        created_image = self.image_service.create(image_obj)
 
-        choice.dict().update({"image_id": created_image.id})
+        choice = ChoiceCreateImage(**choice.dict(), image_id=created_image.id)
         created_choice = self.choice_repo.create(choice)
 
         return created_choice
 
     def create_choice(self, page_id: int, choice: ChoiceCreate) -> Choice:
         # TODO: implement image generation
-        image = ImageCreate(path='default.png')
-        created_image = self.image_service.create(image)
+        image_path = "default.png"
+        image_obj = ImageCreate(path=image_path)
+        created_image = self.image_service.create(image_obj)
 
-        choice.dict().update({"image_id": created_image.id})
+        choice = ChoiceCreateImage(**choice.dict(), image_id=created_image.id)
         created_choice = self.choice_repo.create_choice(page_id=page_id, choice=choice)
 
         return created_choice

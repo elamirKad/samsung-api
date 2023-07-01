@@ -14,9 +14,12 @@ class ChoiceCreate(ChoiceBase):
     pass
 
 
-class Choice(ChoiceBase):
+class ChoiceCreateImage(ChoiceBase):
+    image_id: int
+
+
+class Choice(ChoiceCreateImage):
     id: int
-    image_id: Optional[int]
     created_at: Optional[datetime]
 
     class Config:

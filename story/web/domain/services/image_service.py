@@ -8,5 +8,8 @@ class ImageService(Service):
     def __init__(self, image_repo: ImageRepository):
         self.image_repo = image_repo
 
+    def get(self, id: int) -> Image:
+        return self.image_repo.get(id)
+
     def create(self, image: ImageCreate) -> Image:
         return self.image_repo.create(image)

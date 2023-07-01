@@ -10,6 +10,7 @@ from domain.services.choice_service import ChoiceService
 from protocols.service import Service
 from typing import List, Optional
 from core.text_generation_core import generate_story
+from core.image_generation_core import generate_image
 
 
 class PageService(Service):
@@ -27,14 +28,16 @@ class PageService(Service):
 
     def create_initial_page(self, prompt: str, story_id: int) -> Page:
         # TODO: implement apis
-        image_path = 'default.png'
         audio_path = 'default.mp3'
-        image_obj = ImageCreate(path=image_path)
         audio_obj = AudioCreate(path=audio_path)
-        image = self.image_service.create(image_obj)
         audio = self.audio_service.create(audio_obj)
 
         content, choices = generate_story(prompt, story_id)
+
+        image_path = generate_image(content)
+        image_obj = ImageCreate(path=image_path)
+        image = self.image_service.create(image_obj)
+
         page = self.page_repo.create(PageCreate(content=content), image_id=image.id, audio_id=audio.id, story_id=story_id)
 
         for choice in choices:
@@ -50,13 +53,15 @@ class PageService(Service):
 
     def create_page(self, choice_init: Choice) -> Page:
         # TODO: implement apis
-        image_path = 'default.png'
         audio_path = 'default.mp3'
-        image_obj = ImageCreate(path=image_path)
         audio_obj = AudioCreate(path=audio_path)
-        image = self.image_service.create(image_obj)
         audio = self.audio_service.create(audio_obj)
         content, choices = generate_story(choice_init.prompt, choice_init.story_id)
+
+        image_path = generate_image(content)
+        image_obj = ImageCreate(path=image_path)
+        image = self.image_service.create(image_obj)
+
         page = self.page_repo.create(PageCreate(content=content), image_id=image.id, audio_id=audio.id, story_id=choice_init.story_id)
 
         for choice in choices:

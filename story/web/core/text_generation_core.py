@@ -47,12 +47,12 @@ def generate_story(choice, story_id):
     """
     Generates a story continuation based on the given choice and user ID.
     """
-    openai.api_key = "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"
+    openai.api_key = "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"
     chat_log = load_chat_log(story_id)
     chat_log.append({"role": "user", "content": choice})
 
     messages = [
-        {"role": "system", "content": "You are an elderly storyteller, captivating a young child with an enchanting tale. The very first prompt will have the format:\n\"Tell a story about ... (Child's name is ...)\".\n- The child assumes the role of the main protagonist.\n- You should briefly describe the protagonists visual look.\n- You will craft a brief continuation of the plot, prompting the user to describe the protagonist's actions. You should provide exactly THREE story continuations in the following format:\n'''\nWhat should ... do?\n1) Action one;\n2) Action two;\n3) Action three.\n'''\nFollow this rule carefully!\n- Do not wrap the choices in quotation marks.\n- The continuation should be 5-8 sentences long.\n- After receiving their input, incorporate the chosen action into the story and continue in this manner.\n- Following exactly FOUR (no more, no less) story continuations, the adventure should reach its thrilling conclusion.\n- The story should be appropriate for a child under the age of 10.\n- The story should be written in the third person and active voice."},
+        {"role": "system", "content": "You are an elderly storyteller, captivating a young child with an enchanting tale. The very first prompt will have the format:\n\"Tell a story about ... (Child's name is ...)\".\n- The child assumes the role of the main protagonist.\n- You should briefly describe the protagonists visual look.\n- You will craft a brief continuation of the plot, prompting the user to describe the protagonist's actions. You should provide exactly THREE story continuations in the following format:\n'''\nWhat should ... do?\n1) Action one;\n2) Action two;\n3) Action three.\n'''\nFollow this rule carefully!\n- Do not wrap the choices in quotation marks.\n- The continuation should be 3-5 sentences long.\n- After receiving their input, incorporate the chosen action into the story and continue in this manner.\n- Following exactly FOUR (no more, no less) story continuations, the adventure should reach its thrilling conclusion.\n- The story should be appropriate for a child under the age of 10.\n- The story should be written in the third person and active voice."},
     ]
     messages = messages + chat_log
 
@@ -61,8 +61,7 @@ def generate_story(choice, story_id):
         max_tokens=512,
         messages=messages,
     )["choices"][0]["message"]["content"]
-
     chat_log.append({"role": "assistant", "content": continuation})
     save_chat_log(story_id, chat_log)
 
-    return continuation, get_choices(continuation)
+    return continuation.split("What should")[0], get_choices(continuation)
