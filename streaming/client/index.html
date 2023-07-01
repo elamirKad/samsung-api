@@ -20,14 +20,35 @@
     document.getElementById('audio').src = URL.createObjectURL(mediaSource);
     mediaSource.addEventListener('sourceopen', startStreaming);
 
+    const audioUrls = [
+        'http://localhost/audio/3/1',
+        'http://localhost/audio/3/2',
+        'http://localhost/audio/3/3',
+        'http://localhost/audio/3/4',
+        'http://localhost/audio/3/5',
+        'http://localhost/audio/3/6'
+    ];
+
+    let currentUrlIndex = 0;
+    let sourceBuffer;
+
     async function startStreaming() {
-        let sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
-        let response = await fetch('http://162.19.255.208/audio/1');
+        if (currentUrlIndex >= audioUrls.length) {
+            mediaSource.endOfStream();
+            return;
+        }
+
+        if (!sourceBuffer) {
+            sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+        }
+
+        let response = await fetch(audioUrls[currentUrlIndex]);
         let reader = response.body.getReader();
 
         function processChunk({done, value}) {
             if (done) {
-                mediaSource.endOfStream();
+                currentUrlIndex++;
+                startStreaming();
                 return;
             }
 

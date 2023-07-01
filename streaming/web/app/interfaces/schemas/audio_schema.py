@@ -5,7 +5,7 @@ from typing import Optional
 
 class AudioBase(BaseModel):
     path: str
-    sentences: int
+    sentences: str
 
 
 class AudioCreate(AudioBase):
@@ -22,3 +22,7 @@ class Audio(AudioBase):
 
     class Config:
         orm_mode = True
+
+
+class AudioOutput(Audio):
+    amount: int

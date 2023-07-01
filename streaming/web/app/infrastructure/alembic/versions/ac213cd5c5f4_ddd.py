@@ -1,8 +1,8 @@
-"""DDD migration
+"""DDD
 
-Revision ID: b4f62d8bc44f
+Revision ID: ac213cd5c5f4
 Revises: 
-Create Date: 2023-06-30 15:15:21.568545
+Create Date: 2023-07-01 21:33:22.491147
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b4f62d8bc44f'
+revision = 'ac213cd5c5f4'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,6 +21,7 @@ def upgrade() -> None:
     op.create_table('audios',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('path', sa.String(), nullable=True),
+    sa.Column('sentences', sa.Text(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
