@@ -5,6 +5,8 @@
       <sourceFolder url="file://$MODULE_DIR$/streaming" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/user" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/story" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/story/web" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/streaming/web" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
