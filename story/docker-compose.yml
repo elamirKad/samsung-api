@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  story:
+    build: ./web
+    command: uvicorn application.main:app --host 0.0.0.0 --port 8000
+    env_file:
+      - ./web/.env
+    volumes:
+      - ./web:/story
+    ports:
+      - 8000:8000
+    depends_on:
+      - story-db
+    networks:
+      - default
+
+  story-db:
+    image: postgres:14-alpine
+    ports:
+      - 5433:5432
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - story_postgres_data:/var/lib/postgresql/data/
+    networks:
+      - default
+
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - story
+    networks:
+      - default
+
+volumes:
+  story_postgres_data:
+
+networks:
+  default:

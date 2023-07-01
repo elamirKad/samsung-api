@@ -5,8 +5,15 @@ from sqlalchemy.orm import Session
 from domain.repositories.choice_repository import ChoiceRepository
 from domain.repositories.image_repository import ImageRepository
 from domain.repositories.story_repository import StoryRepository
+from domain.repositories.topic_repository import TopicRepository
+from domain.repositories.page_repository import PageRepository
+from domain.repositories.audio_repository import AudioRepository
 from domain.services.choice_service import ChoiceService
 from domain.services.story_service import StoryService
+from domain.services.topic_service import TopicService
+from domain.services.page_service import PageService
+from domain.services.image_service import ImageService
+from domain.services.audio_service import AudioService
 from interfaces.schemas.story_schema import StoryCreate, Story, StoryResponse, StoryWithChoices
 from infrastructure.database import get_db
 from infrastructure.jwt_token import decode_access_token
@@ -18,8 +25,15 @@ def get_story_service(db: Session = Depends(get_db)) -> StoryService:
     story_repo = StoryRepository(db=db)
     choice_repo = ChoiceRepository(db=db)
     image_repo = ImageRepository(db=db)
+    image_service = ImageService(image_repo=image_repo)
+    audio_repo = AudioRepository(db=db)
+    audio_service = AudioService(audio_repo=audio_repo)
     choice_service = ChoiceService(choice_repo=choice_repo, image_repo=image_repo)
-    return StoryService(story_repo=story_repo, choice_service=choice_service)
+    page_repo = PageRepository(db=db)
+    page_service = PageService(page_repo=page_repo, choice_service=choice_service, image_service=image_service, audio_service=audio_service)
+    topic_repo = TopicRepository(db=db)
+    topic_service = TopicService(topic_repo=topic_repo)
+    return StoryService(story_repo=story_repo, page_service=page_service, topic_service=topic_service)
 
 
 @router.get("", response_model=List[StoryResponse])

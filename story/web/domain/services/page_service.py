@@ -9,6 +9,7 @@ from domain.services.audio_service import AudioService
 from domain.services.choice_service import ChoiceService
 from protocols.service import Service
 from typing import List, Optional
+from core.text_generation_core import generate_story
 
 
 class PageService(Service):
@@ -23,6 +24,29 @@ class PageService(Service):
 
     def create(self):
         pass
+
+    def create_initial_page(self, prompt: str, story_id: int) -> Page:
+        # TODO: implement apis
+        image_path = 'default.png'
+        audio_path = 'default.mp3'
+        image_obj = ImageCreate(path=image_path)
+        audio_obj = AudioCreate(path=audio_path)
+        image = self.image_service.create(image_obj)
+        audio = self.audio_service.create(audio_obj)
+
+        content, choices = generate_story(prompt, story_id)
+        page = self.page_repo.create(PageCreate(content=content), image_id=image.id, audio_id=audio.id)
+
+        for choice in choices:
+            choice_obj = ChoiceCreate(
+                page_id=page.id,
+                prompt=choice,
+                page_order=1,
+                story_id=story_id
+            )
+            self.choice_service.create_choice(page_id=page.id, choice=choice_obj)
+
+        return page
 
     def create_page(self, page: PageCreate, choice_init: Choice) -> Page:
         # TODO: implement apis
